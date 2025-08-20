@@ -1,12 +1,26 @@
-from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
+user_id = update.message.from_user.id
+    
+    cursor.execute(
+        "UPDATE users SET premium = 1 WHERE user_id = ?",
+        (user_id,)
+    )
+    conn.commit()
+    
+    await update.message.reply_text(
+        "✅ Premium-доступ активовано!\nТепер у тебе безлімітні повідомлення!",
+        reply_markup=main_menu()
+    )
 
-TOKEN = "8309441924:AAH3x0Hpk2eZtZDXgjltDyh6YSckN0wpoE8" 
+def main():
+    app = Application.builder().token(TOKEN).build()
+    
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("premium", premium))
+    app.add_handler(CommandHandler("check_payment", check_payment))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_buttons))
+    
+    print("🟢 Бот запущено!")
+    app.run_polling()
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("🚀 Бот живе! Напиши /help")
-
-app = Application.builder().token(TOKEN).build()
-app.add_handler(CommandHandler("start", start))
-print("🟢 Бот запущено! Чекаю повідомлень...")
-app.run_polling()
+if name == "main":
+    main()
