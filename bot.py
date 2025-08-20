@@ -84,13 +84,12 @@ async def check_payment(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def main():
     app = Application.builder().token(TOKEN).build()
-app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("premium", premium))
     app.add_handler(CommandHandler("check_payment", check_payment))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_buttons))
     print("🟢 Бот запущено!")
-app.run_polling()
+    app.run_polling()
 
-if name == "main":
+if __name__ == "__main__":
     main()
-
