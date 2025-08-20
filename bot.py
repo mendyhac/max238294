@@ -3,12 +3,12 @@ from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandl
 import sqlite3
 import datetime
 import os
-import openai
+from openai import OpenAI
 
 TOKEN = os.getenv("TELEGRAM_TOKEN")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")  # Додаємо ключ OpenAI
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-openai.api_key = OPENAI_API_KEY
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 conn = sqlite3.connect('users.db', check_same_thread=False)
 cursor = conn.cursor()
@@ -52,9 +52,8 @@ def update_message_count(user_id):
     conn.commit()
 
 async def ask_ai(question):
-    """Функція для спілкування з AI"""
     try:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "Ти дружній шкільний помічник. Відповідай українською мовою. Допомагай школярам з навчанням, домашками та життєвими порадами. Будь позитивним і підтримуючим."},
@@ -99,7 +98,7 @@ async def handle_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif text == "💳 Оформити підписку":
         response = "💳 Преміум-підписка ($5/місяць):\n- Безлімітні повідомлення\n- Пріоритетна підтримка\n- Необмежений доступ до AI\n\nОформіть: /premium"
     else:
-        # Якщо це не кнопка, а звичайне повідомлення - відправляємо AI
+        await update.message.reply_text("🤖 Думаю...", reply_markup=main_menu())
         ai_response = await ask_ai(text)
         response = f"🤖 AI-помічник:\n{ai_response}"
     
