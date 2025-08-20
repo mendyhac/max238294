@@ -1,3 +1,4 @@
+> Kseerd:
 from telegram import Update, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
 import sqlite3
@@ -84,12 +85,12 @@ async def check_payment(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def main():
     app = Application.builder().token(TOKEN).build()
-    app.add_handler(CommandHandler("start", start))
+app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("premium", premium))
     app.add_handler(CommandHandler("check_payment", check_payment))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_buttons))
     print("🟢 Бот запущено!")
-    app.run_polling()
+app.run_polling()
 
 if name == "main":
     main()
