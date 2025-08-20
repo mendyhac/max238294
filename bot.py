@@ -1,4 +1,3 @@
-> Kseerd:
 from telegram import Update, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
 import sqlite3
@@ -94,3 +93,4 @@ app.run_polling()
 
 if name == "main":
     main()
+
